@@ -9,7 +9,7 @@ end
 AutoHtml.add_filter(:image).with({:alt => ''}) do |text, options|
   r = Redcarpet::Markdown.new(NoParagraphRenderer)
   alt = options[:alt]
-  text.gsub(/.+?\.(jpg|jpeg|gif|png)(\?\S+)?/i) do |match|
+  text.gsub(/\S+?\.(jpg|jpeg|gif|png)(\?\S+)?/i) do |match|
     r.render("![#{alt}](#{match})")
   end
 end
