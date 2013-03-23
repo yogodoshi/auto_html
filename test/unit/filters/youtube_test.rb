@@ -17,9 +17,14 @@ class YouTubeTest < Test::Unit::TestCase
     assert_equal '<iframe width="420" height="315" src="//www.youtube.com/embed/BwNrmYRiX_o" frameborder="0" allowfullscreen></iframe>', result
   end
 
-  def test_transform3
+  def test_transform4
     result = auto_html('foo http://www.youtube.com/watch?v=fT1ahr81HLw bar') { youtube }
     assert_equal 'foo <iframe width="420" height="315" src="//www.youtube.com/embed/fT1ahr81HLw" frameborder="0" allowfullscreen></iframe> bar', result
+  end
+
+  def test_transform5
+    result = auto_html('foo https://www.youtube.com/watch?feature=player_embedded&v=isXwA3uwF1M bar') { youtube }
+    assert_equal 'foo <iframe width="420" height="315" src="//www.youtube.com/embed/isXwA3uwF1M" frameborder="0" allowfullscreen></iframe> bar', result
   end
 
   def test_transform_url_without_www
@@ -55,5 +60,15 @@ class YouTubeTest < Test::Unit::TestCase
   def test_transform_url_without_http_and_www
     result = auto_html('youtube.com/watch?v=BwNrmYRiX_o') { youtube }
     assert_equal '<iframe width="420" height="315" src="//www.youtube.com/embed/BwNrmYRiX_o" frameborder="0" allowfullscreen></iframe>', result
+  end
+
+  def test_mobile_url
+    result = auto_html('foo http://m.youtube.com/#/watch?feature=plcp&v=XUCSiUYMqvw bar') { youtube }
+    assert_equal 'foo <iframe width="420" height="315" src="//www.youtube.com/embed/XUCSiUYMqvw" frameborder="0" allowfullscreen></iframe> bar', result
+  end
+
+  def test_lots_of_params
+    result = auto_html('foo http://www.youtube.com/watch?annotation_id=annotation_655650&feature=iv&src_vid=p-b9N0IWLjc&v=Fez6Uo2_r4A bar') { youtube }
+    assert_equal 'foo <iframe width="420" height="315" src="//www.youtube.com/embed/Fez6Uo2_r4A" frameborder="0" allowfullscreen></iframe> bar', result
   end
 end
